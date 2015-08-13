@@ -1,5 +1,5 @@
 build:
-	npm install
+	npm install --msvs_version=2013
 
 run:
 	node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .
