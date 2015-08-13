@@ -11,7 +11,11 @@
   "author": "o.masakazu@gmail.com",
   "license": "MIT",
   "description": "",
+  "dependencies": {
+    "serialport-electron": "1.7.4-electron-0.30.3"
+  },
   "devDependencies": {
-    "electron-prebuilt": "^0.30.4"
+    "electron-prebuilt": "^0.30.4",
+    "electron-rebuild": "^0.2.5"
   }
 }

@@ -1,6 +1,7 @@
 'use strict';
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
+var util = require('util');
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -36,5 +37,10 @@ app.on('ready', function() {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
+  });
+
+  var serialport = require('serialport-electron');
+  serialport.list(function (err,ports) {
+    console.log(util.format("%j",ports));
   });
 });
