@@ -2,6 +2,8 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var util = require('util');
+var path = require('path');
+var os = require('os');
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -43,4 +45,9 @@ app.on('ready', function() {
   serialport.list(function (err,ports) {
     console.log(util.format("%j",ports));
   });
+
+  var Avrdude = require('./lib/avrdude');
+  var avrdude = new Avrdude();
+  var a = avrdude.run([]);
+  a.stderr.pipe(process.stderr);
 });

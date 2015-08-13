@@ -4,7 +4,7 @@ var test  = require('tap').test
 
 test('new Avrdude', function (t) {
   t.plan(1);
-  var avrdude = new Avrdude("path/to/avrdude");
+  var avrdude = new Avrdude();
   t.ok(avrdude, 'avrdude instantiated');
   t.end();
 });
@@ -12,7 +12,7 @@ test('new Avrdude', function (t) {
 var real = (process.env.NODE_AVRDUDE_REAL !== '1');
 test('run avrdude', function (t) {
   t.plan(2);
-  var avrdude = new Avrdude("/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avrdude");
+  var avrdude = new Avrdude();
   var process = avrdude.run([]);
   process.stderr.setEncoding('utf8');
   var stderr = "";
