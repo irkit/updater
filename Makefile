@@ -4,5 +4,7 @@ build:
 run:
 	node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .
 
-.PHONY: run
+test:
+	node node_modules/tap/bin/run.js test/*.js
 
+.PHONY: build run test
