@@ -12,6 +12,7 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
+    "async": "^1.4.2",
     "serialport-electron": "1.7.4-electron-0.30.3"
   },
   "devDependencies": {

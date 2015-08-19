@@ -4,6 +4,7 @@ var BrowserWindow = require('browser-window');  // Module to create native brows
 var util = require('util');
 var path = require('path');
 var os = require('os');
+var controller = require('./controller');
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -41,13 +42,10 @@ app.on('ready', function() {
     mainWindow = null;
   });
 
-  var serialport = require('serialport-electron');
-  serialport.list(function (err,ports) {
-    console.log(util.format("%j",ports));
+  controller.onReady(function(err, foundPort, availableRelease) {
+    // TODO show in window
   });
 
-  var Avrdude = require('./lib/avrdude');
-  var avrdude = new Avrdude();
-  var a = avrdude.run([]);
-  a.stderr.pipe(process.stderr);
+  // TODO call update logic
+  // logic.update(port, release);
 });
