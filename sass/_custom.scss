@@ -1,0 +1,30 @@
+body {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+    -webkit-user-select: none;
+}
+
+.page {
+    @include stretch( 1em, 1em, 1em, 1em );
+    display: none;
+}
+
+p {
+    cursor: default;
+}
+
+.progress {
+    background-image: url("../images/progress_16x16.gif");
+    background-repeat: no-repeat;
+    background-position-x: 1px;
+    padding-left: 24px;
+}
+
+#checking {
+    #checking_footer {
+        text-align: right;
+    }
+}
+
+.loading {
+    margin-right: 10px;
+}

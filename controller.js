@@ -5,7 +5,7 @@ var async = require('async');
 var serialport = require('serialport-electron');
 var github = require('./lib/github');
 
-module.export = {
+module.exports = {
   // callback(err, foundPort, availableRelease)
   onReady: function(callback) {
     var foundPort = null;

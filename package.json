@@ -13,6 +13,8 @@
   "description": "",
   "dependencies": {
     "async": "^1.4.2",
+    "temp": "^0.8.3",
+    "request": "^2.60.0",
     "serialport-electron": "1.7.4-electron-0.30.3"
   },
   "devDependencies": {

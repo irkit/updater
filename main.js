@@ -42,9 +42,11 @@ app.on('ready', function() {
     mainWindow = null;
   });
 
-  controller.onReady(function(err, foundPort, availableRelease) {
-    // TODO show in window
-  });
+  // controller.onReady(function(err, foundPort, availableRelease) {
+  //   console.log(err, foundPort, availableRelease);
+  //   // TODO show in window
+  //   mainWindow.loadUrl('file://' + __dirname + '/ready.html');
+  // });
 
   // TODO call update logic
   // logic.update(port, release);

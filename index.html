@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hello World!</title>
+    <title>Loading...</title>
+    <script type="text/javascript">
+      // https://github.com/atom/electron/issues/254
+      window.jQuery = window.$ = require('./javascripts/jquery.min.js');
+    </script>
+    <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <link href="./stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using io.js <script>document.write(process.version)</script>
-    and Electron <script>document.write(process.versions['electron'])</script>.
+    <div class="page" id="loading">
+      <p><span class="loading"><img src="./images/progress_16x16.gif" width="16" height="16" /></span>Loading...</p>
+    </div>
+    <div class="page alert alert-danger" id="error" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span>Ready</span>
+    </div>
   </body>
 </html>
