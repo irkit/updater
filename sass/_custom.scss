@@ -3,6 +3,11 @@ body {
     -webkit-user-select: none;
 }
 
+.container {
+    width: 970px;
+    max-width: none !important;
+}
+
 .page {
     @include stretch( 1em, 1em, 1em, 1em );
     display: none;

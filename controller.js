@@ -15,7 +15,7 @@ module.exports = {
       irkit.serialports,
       function (irkitPorts, callback) {
         if (irkitPorts.length !== 1) {
-          callback( "Number of IRKit ports expected to be 1 but got: "+util.format("%j", irkitPorts) );
+          callback( "IRKit not connected. Connect IRKit with a USB cable to this machine and restart" );
           return;
         }
 

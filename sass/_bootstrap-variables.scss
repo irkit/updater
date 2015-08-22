@@ -26,7 +26,7 @@
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-// $body-bg:               #fff
+$body-bg:               #ECECEC;
 //** Global text color on `<body>`.
 // $text-color:            $gray-dark
 
@@ -288,7 +288,7 @@
 // Small screen / tablet
 //** Deprecated `$screen-sm` as of v3.0.1
 // $screen-sm:                  768px
-// $screen-sm-min:              $screen-sm
+$screen-sm-min:                 1px;
 //** Deprecated `$screen-tablet` as of v3.0.1
 // $screen-tablet:              $screen-sm-min
 
