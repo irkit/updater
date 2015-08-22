@@ -25,6 +25,38 @@ function showUpdateView(port, release) {
   $("#update").show();
   $("#update-port").text(port);
   $("#update-release").text(release.name);
+  $("#update-button").click( function () {
+    $("#update-button").attr( "disabled", true );
+    $("#update-log").show();
+    controller.update(port, release,
+                      function (progress) {
+                        appendUpdateLog(progress);
+                      },
+                      function (error) {
+                        if (error === null || error === undefined) {
+                          appendUpdateLog("Finished\n");
+                        }
+                        else {
+                          appendUpdateLog("Finished with error: "+error+"\n");
+                          $("#update-button").text( "Retry" );
+                          $("#update-button").attr( "disabled", false );
+                        }
+                      });
+  });
+}
+
+function appendUpdateLog(message) {
+  message.
+    split(/\n/).
+    map(function (val, index) {
+      return document.createTextNode(val);
+    }).
+    map(function (line, index, array) {
+      $("#update-log").append(line);
+      if (index !== array.length-1) {
+        $("#update-log").append("<br />");
+      }
+    });
 }
 
 function showErrorMessage(message) {

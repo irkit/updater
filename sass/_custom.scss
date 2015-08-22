@@ -33,3 +33,13 @@ p {
 .loading {
     margin-right: 10px;
 }
+
+#update-log {
+    display: none;
+    background-color: $gray-darker;
+    color: $gray-lighter;
+    font-family: $font-family-monospace;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: $font-size-small;
+}

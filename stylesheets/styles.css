@@ -8814,6 +8814,17 @@ p {
   margin-right: 10px;
 }
 
+/* line 37, ../sass/_custom.scss */
+#update-log {
+  display: none;
+  background-color: #222222;
+  color: #eeeeee;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 12px;
+}
+
 /*!
  *  Font Awesome 4.4.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
