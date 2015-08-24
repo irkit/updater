@@ -7,7 +7,10 @@ var github = require('./lib/github');
 var arduino = require('./lib/arduino');
 var Avrdude = require('./lib/avrdude');
 var passwordExtractor = require("./lib/password_extractor");
+var passwordReplacer = require("./lib/intelhex_replacer");
 var versionExtractor = require("./lib/version_extractor");
+var temp = require("temp");
+temp.track(); // automatic cleanup
 
 module.exports = {
   // callback(err, foundPort, availableRelease)
@@ -33,7 +36,7 @@ module.exports = {
       },
       function (response, releases, callback) {
         var releasesWithAssets = releases.filter( function(release,index) {
-          // if ( (release.assets.length > 0) && !release.prerelease ) {
+          // if ( (release.assets.length > 0) && !release.prerelease ) { // TODO uncomment
           if ( release.assets.length > 0 ) {
             return true;
           }
@@ -54,7 +57,7 @@ module.exports = {
     });
   },
   update: function (port, release, progress, completion) {
-    function callProgress(message) {
+    function callProgressStep(message) {
       return function () {
         progress(message);
 
@@ -65,34 +68,62 @@ module.exports = {
         callback.apply(null, args);
       };
     }
+    function sleepStep (sleep) {
+      return function () {
+        progress("Sleeping for " + sleep + " seconds\n");
+
+        // pass along arguments
+        var args = Array.prototype.slice.call(arguments);
+        var callback = args.pop();
+        args.unshift(null); // error is null
+        setTimeout( function () {
+          callback.apply(null, args);
+        }, sleep * 1000 );
+      };
+    }
 
     var downloader = new github.Downloader(release);
-    var newFirmwarePath = null;
+    var hexFilePath = null;
 
     async.waterfall([
-      callProgress( "Downloading "+release.name+" from "+release.url + "\n" ),
+      callProgressStep( "Downloading "+release.name+" from "+release.url + "\n" ),
       downloader.download.bind(downloader),
       function (path, callback) {
         progress( "Successfully downloaded to "+path+"\n" );
-        newFirmwarePath = path;
+        hexFilePath = path;
         callback();
       },
-      callProgress( "Reading current firmware from IRKit\n" ),
+      callProgressStep( "Reading current firmware from IRKit\n" ),
       function (callback) {
         irkit.readFlash( port, 10000, progress, callback );
       },
-      function (flashHEXPath, callback) {
-        progress( "Successfully read Flash into "+flashHEXPath+"\n" );
-        callback(null, flashHEXPath);
+      function (readHEXFilePath, callback) {
+        progress( "Successfully read Flash into "+readHEXFilePath+"\n" );
+        hexFilePath = readHEXFilePath;
+        callback(null);
       },
-      function (flashHEXPath, callback) {
-        passwordExtractor.extract(flashHEXPath, progress, callback);
+      function (callback) {
+        passwordExtractor.extract(hexFilePath, progress, callback);
       },
       function (password, callback) {
         progress( "Extracted original password "+password+"\n" );
-        irkit.writeReplacingPassword( port, 10000, newFirmwarePath, password, progress, callback );
+        progress( "Replacing password in hex file\n" );
+
+        var file = temp.openSync({ suffix: ".hex" }); // I know, I know but creating temp files are not gonna take much time
+        passwordReplacer.replace( path.normalize(hexFilePath),
+                                  "XXXXXXXXXX",
+                                  password,
+                                  file.path,
+                                  progress,
+                                  callback );
+        hexFilePath = file.path;
       },
-      callProgress( "Checking firmware\n" ),
+      sleepStep(5),
+      function (callback) {
+        irkit.writeFlash( port, hexFilePath, 10000, progress, callback );
+      },
+      sleepStep(5),
+      callProgressStep( "Checking firmware\n" ),
       function (callback) {
         irkit.readFlash( port, 10000, progress, callback );
       },

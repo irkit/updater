@@ -53,7 +53,7 @@ function showUpdateView(port, release) {
                       },
                       function (error) {
                         if (error === null || error === undefined) {
-                          appendUpdateLog("Finished\n");
+                          appendUpdateLog("Finished successfully!\n");
                         }
                         else {
                           appendUpdateLog("Finished with error: "+error+"\n");
