@@ -4,7 +4,6 @@ var gulp = require('gulp');
 var useref = require('gulp-useref');
 var livereload = require('gulp-livereload');
 var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
 var compass = require('gulp-compass');
 
 gulp.task('watch', [ 'watch:sass' ], function () {
