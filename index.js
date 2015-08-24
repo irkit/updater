@@ -1,8 +1,8 @@
-var controller = require('./controller');
+var updater = require('./lib/updater');
 window.onload = function () {
 
   $("#loading").show();
-  controller.onReady(function(err, foundPort, availableRelease) {
+  updater.onReady(function(err, foundPort, availableRelease) {
     $("#loading").hide();
     if (err !== null) {
       showErrorMessage(err);
@@ -47,7 +47,7 @@ function showUpdateView(port, release) {
   $("#update-button").click( function () {
     $("#update-button").attr( "disabled", true );
     $(".update-log-control").show();
-    controller.update(port, release,
+    updater.update(port, release,
                       function (progress) {
                         appendUpdateLog(progress);
                       },

@@ -4,7 +4,6 @@ var BrowserWindow = require('browser-window');  // Module to create native brows
 var util = require('util');
 var path = require('path');
 var os = require('os');
-var controller = require('./controller');
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -41,13 +40,4 @@ app.on('ready', function() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
-
-  // controller.onReady(function(err, foundPort, availableRelease) {
-  //   console.log(err, foundPort, availableRelease);
-  //   // TODO show in window
-  //   mainWindow.loadUrl('file://' + __dirname + '/ready.html');
-  // });
-
-  // TODO call update logic
-  // logic.update(port, release);
 });
