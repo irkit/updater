@@ -46,7 +46,7 @@ function showUpdateView(port, release) {
   $("#update-release").text(release.name);
   $("#update-button").click( function () {
     $("#update-button").attr( "disabled", true );
-    $(".update-log-control").show();
+    $("#update-log-container").show();
     $(".update-result-alert").hide();
     updater.update(port, release,
                       function (progress) {

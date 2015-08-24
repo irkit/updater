@@ -8830,7 +8830,7 @@ p {
 }
 
 /* line 50, ../sass/_custom.scss */
-.update-log-control {
+#update-log-container {
   display: none;
 }
 
