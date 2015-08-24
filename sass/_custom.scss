@@ -17,6 +17,10 @@ p {
     cursor: default;
 }
 
+.update-section {
+    margin-bottom: 10px;
+}
+
 .progress {
     background-image: url("../images/progress_16x16.gif");
     background-repeat: no-repeat;
@@ -44,6 +48,10 @@ p {
 }
 
 .update-log-control {
+    display: none;
+}
+
+.update-result-alert {
     display: none;
 }
 

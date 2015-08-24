@@ -8797,6 +8797,11 @@ p {
 }
 
 /* line 20, ../sass/_custom.scss */
+.update-section {
+  margin-bottom: 10px;
+}
+
+/* line 24, ../sass/_custom.scss */
 .progress {
   background-image: url("../images/progress_16x16.gif");
   background-repeat: no-repeat;
@@ -8804,17 +8809,17 @@ p {
   padding-left: 24px;
 }
 
-/* line 28, ../sass/_custom.scss */
+/* line 32, ../sass/_custom.scss */
 #checking #checking_footer {
   text-align: right;
 }
 
-/* line 33, ../sass/_custom.scss */
+/* line 37, ../sass/_custom.scss */
 .loading {
   margin-right: 10px;
 }
 
-/* line 37, ../sass/_custom.scss */
+/* line 41, ../sass/_custom.scss */
 #update-log {
   background-color: #222222;
   color: #eeeeee;
@@ -8824,16 +8829,21 @@ p {
   font-size: 12px;
 }
 
-/* line 46, ../sass/_custom.scss */
+/* line 50, ../sass/_custom.scss */
 .update-log-control {
   display: none;
 }
 
-/* line 50, ../sass/_custom.scss */
+/* line 54, ../sass/_custom.scss */
+.update-result-alert {
+  display: none;
+}
+
+/* line 58, ../sass/_custom.scss */
 #update-log-buttons {
   position: relative;
 }
-/* line 52, ../sass/_custom.scss */
+/* line 60, ../sass/_custom.scss */
 #update-log-buttons .buttons {
   position: absolute;
   top: 5px;
@@ -8843,24 +8853,24 @@ p {
   cursor: pointer;
   padding: 0px;
 }
-/* line 60, ../sass/_custom.scss */
+/* line 68, ../sass/_custom.scss */
 #update-log-buttons .buttons .button-copy {
   padding: 5px 8px;
   background-color: #eeeeee;
   color: #222222;
   border: 1px solid #222222;
 }
-/* line 65, ../sass/_custom.scss */
+/* line 73, ../sass/_custom.scss */
 #update-log-buttons .buttons .button-copy:first-child {
   border-right: 0px;
   border-radius: 0 0 0 4px;
   margin-right: -5px;
 }
-/* line 70, ../sass/_custom.scss */
+/* line 78, ../sass/_custom.scss */
 #update-log-buttons .buttons .button-copy:last-child {
   border-radius: 0;
 }
-/* line 73, ../sass/_custom.scss */
+/* line 81, ../sass/_custom.scss */
 #update-log-buttons .buttons .button-copy:hover {
   background-color: #222222;
   color: #eeeeee;

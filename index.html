@@ -22,7 +22,7 @@
     </div>
 
     <div class="page" id="update">
-      <div class="form-horizontal">
+      <div class="form-horizontal update-section">
         <div class="form-group">
           <label class="col-xs-5 control-label">IRKit connected on port</label>
           <div class="col-xs-7">
@@ -41,13 +41,27 @@
           </div>
         </div>
       </div>
+
       <div id="update-log-buttons" class="update-log-control">
         <span class="buttons">
           <span class="button-copy" id="update-log-clear" data-toggle="tooltip" data-placement="top" title="Clear log area">Clear</span>
           <span class="button-copy" id="update-log-copy" data-toggle="tooltip" data-placement="top" title="Copy to clipboard">Copy</span>
         </span>
       </div>
-      <p class="col-xs-12 update-log-control" id="update-log"></p>
+      <p class="col-xs-12 update-log-control update-section" id="update-log"></p>
+
+      <div class="update-section clearfix">
+        <div class="alert alert-danger update-result-alert" id="update-error" role="alert">
+          <i class="fa fa-exclamation-circle"></i>
+          <span id="update-error-message">Update failed! Please re-connect IRKit and try again</span>
+        </div>
+
+        <div class="alert alert-success update-result-alert" id="update-success" role="alert">
+          <i class="fa fa-thumbs-o-up"></i>
+          <span id="update-success-message">Update finished successfully!</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </body>

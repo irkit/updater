@@ -54,11 +54,13 @@ function showUpdateView(port, release) {
                       function (error) {
                         if (error === null || error === undefined) {
                           appendUpdateLog("Finished successfully!\n");
+                          $("#update-success").show();
                         }
                         else {
                           appendUpdateLog("Finished with error: "+error+"\n");
                           $("#update-button").text( "Retry" );
                           $("#update-button").attr( "disabled", false );
+                          $("#update-error").show();
                         }
                       });
   });
