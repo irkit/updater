@@ -8816,13 +8816,55 @@ p {
 
 /* line 37, ../sass/_custom.scss */
 #update-log {
-  display: none;
   background-color: #222222;
   color: #eeeeee;
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
   border-radius: 4px;
   padding: 10px;
   font-size: 12px;
+}
+
+/* line 46, ../sass/_custom.scss */
+.update-log-control {
+  display: none;
+}
+
+/* line 50, ../sass/_custom.scss */
+#update-log-buttons {
+  position: relative;
+}
+/* line 52, ../sass/_custom.scss */
+#update-log-buttons .buttons {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  z-index: 10;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0px;
+}
+/* line 60, ../sass/_custom.scss */
+#update-log-buttons .buttons .button-copy {
+  padding: 5px 8px;
+  background-color: #eeeeee;
+  color: #222222;
+  border: 1px solid #222222;
+}
+/* line 65, ../sass/_custom.scss */
+#update-log-buttons .buttons .button-copy:first-child {
+  border-right: 0px;
+  border-radius: 0 0 0 4px;
+  margin-right: -5px;
+}
+/* line 70, ../sass/_custom.scss */
+#update-log-buttons .buttons .button-copy:last-child {
+  border-radius: 0;
+}
+/* line 73, ../sass/_custom.scss */
+#update-log-buttons .buttons .button-copy:hover {
+  background-color: #222222;
+  color: #eeeeee;
+  border: 1px solid #eeeeee;
 }
 
 /*!

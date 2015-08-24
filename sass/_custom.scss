@@ -35,11 +35,46 @@ p {
 }
 
 #update-log {
-    display: none;
     background-color: $gray-darker;
     color: $gray-lighter;
     font-family: $font-family-monospace;
     border-radius: 4px;
     padding: 10px;
     font-size: $font-size-small;
+}
+
+.update-log-control {
+    display: none;
+}
+
+#update-log-buttons {
+    position: relative;
+    .buttons {
+        position: absolute;
+        top: 5px;
+        right: 0;
+        z-index: 10;
+        font-size: $font-size-small;
+        cursor: pointer;
+        padding: 0px;
+        .button-copy {
+            padding: 5px 8px;
+            background-color: $gray-lighter;
+            color: $gray-darker;
+            border: 1px solid $gray-darker;
+            &:first-child {
+                border-right: 0px;
+                border-radius: 0 0 0 4px;
+                margin-right: -5px;
+            }
+            &:last-child {
+                border-radius: 0;
+            }
+            &:hover {
+                background-color: $gray-darker;
+                color: $gray-lighter;
+                border: 1px solid $gray-lighter;
+            }
+        }
+    }
 }

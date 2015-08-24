@@ -19,6 +19,25 @@ window.onload = function () {
 
     showUpdateView(foundPort, availableRelease);
   });
+
+  $('[data-toggle="tooltip"]').tooltip();
+  $("#update-log-clear").click( function() {
+    $("#update-log").html("<br />");
+  });
+  $("#update-log-copy").click( function() {
+    var log = $("#update-log").html().replace(/<br>/gm, "\n");
+    require("clipboard").writeText( log );
+    var copy = $("#update-log-copy");
+    copy
+      .attr("title", "Copied!")
+      .tooltip("fixTitle")
+      .tooltip("show")
+      .on("hidden.bs.tooltip", function() {
+        copy
+          .attr("title", "Copy to clipboard")
+          .tooltip("fixTitle");
+      });
+  });
 };
 
 function showUpdateView(port, release) {
@@ -27,7 +46,7 @@ function showUpdateView(port, release) {
   $("#update-release").text(release.name);
   $("#update-button").click( function () {
     $("#update-button").attr( "disabled", true );
-    $("#update-log").show();
+    $(".update-log-control").show();
     controller.update(port, release,
                       function (progress) {
                         appendUpdateLog(progress);
