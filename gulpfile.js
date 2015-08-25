@@ -8,6 +8,9 @@ var compass = require('gulp-compass');
 var packager = require('electron-packager');
 var del = require('del');
 var runSequence = require('run-sequence');
+var fs = require('fs');
+var path = require('path');
+var archiver = require('archiver');
 
 var buildDir = 'build';
 var distDir = 'dist';
@@ -25,16 +28,41 @@ gulp.task('watch:sass', function () {
 });
 
 var packageTasks = [ 'win32', 'darwin' ].map( function (platform) {
+  var arch = 'x64';
+  var appName = 'IRKit Updater';
+  var appVersion = require('./package.json').version;
   var taskName = 'package:' + platform;
   gulp.task(taskName, [ 'build' ], function (done) {
     packager({
       dir: buildDir,
-      name: 'IRKit Updater',
-      arch: 'x64', // TODO 32bit for win32
+      name: appName,
+      arch: arch, // TODO 32bit for win32
       platform: platform,
       out: distDir + '/' + platform,
       version: '0.30.4'
-    }, done);
+    }, function (err, appPath) {
+      if (err) {
+        done(err);
+        return null;
+      }
+      else {
+        var dest = [appName, platform, arch, appVersion].join("-") + ".zip";
+        var cwd = path.join(distDir, platform);
+        var zip = archiver.create('zip', {});
+        var output = fs.createWriteStream(path.join(cwd, dest));
+        zip.pipe(output);
+        zip.bulk([
+          {
+            expand: true,
+            cwd: cwd,
+            src: [path.basename(appPath) + "/**/*"],
+            dot: true
+          }
+        ]);
+        zip.finalize();
+        return output;
+      }
+    });
   });
   return taskName;
 });
