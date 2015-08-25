@@ -27,11 +27,12 @@ gulp.task('watch:sass', function () {
   gulp.watch('sass/**/*.scss', ['build:sass']);
 });
 
-var packageTasks = [ 'win32', 'darwin' ].map( function (platform) {
-  var arch = 'x64';
+var packageTasks = [ ['win32', 'ia32'], ['win32', 'x64'], ['darwin', 'x64'] ].map( function (platformAndArch) {
+  var platform = platformAndArch[0];
+  var arch = platformAndArch[1];
   var appName = 'IRKit Updater';
   var appVersion = require('./package.json').version;
-  var taskName = 'package:' + platform;
+  var taskName = [ 'package', platform, arch ].join(":");
   gulp.task(taskName, [ 'build' ], function (done) {
     packager({
       dir: buildDir,

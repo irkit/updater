@@ -14,6 +14,9 @@ function executable(base) {
   else if ((platform == "win32") && (arch == "ia32")) {
     basename = base + "_windows_386.exe";
   }
+  else if ((platform == "win32") && (arch == "x64")) {
+    basename = base + "_windows_amd64.exe";
+  }
   else {
     throw( "platform or architecture not supported!" );
   }
