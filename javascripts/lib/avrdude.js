@@ -30,7 +30,7 @@ Avrdude.prototype.makeCommand = function () {
   else {
     throw( "platform or architecture not supported!" );
   }
-  return path.join(__dirname, "..", "bin", basename);
+  return path.join(__dirname, "..", "..", "bin", basename);
 };
 
 Avrdude.prototype.run = function (args) {
@@ -53,7 +53,7 @@ Avrdude.prototype.run = function (args) {
 };
 
 Avrdude.prototype.config = function () {
-  return path.join(__dirname, "..", "etc", "avrdude.conf");
+  return path.join(__dirname, "..", "..", "etc", "avrdude.conf");
 };
 
 module.exports = Avrdude;

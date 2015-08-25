@@ -16,7 +16,7 @@ function executable() {
   else {
     throw( "platform or architecture not supported!" );
   }
-  return path.join(__dirname, "..", "bin", basename);
+  return path.join(__dirname, "..", "..", "bin", basename);
 }
 
 module.exports = {

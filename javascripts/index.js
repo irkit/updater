@@ -1,4 +1,4 @@
-var updater = require('./lib/updater');
+var updater = require('./javascripts/lib/updater');
 window.onload = function () {
 
   $("#loading").show();
