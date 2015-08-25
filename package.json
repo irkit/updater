@@ -1,5 +1,5 @@
 {
-  "name": "IRKit Updater",
+  "name": "irkit-updater",
   "version": "0.1.0",
   "main": "javascripts/main.js",
   "scripts": {
