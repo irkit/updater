@@ -1,3 +1,4 @@
+'use strict';
 var path = require('path');
 var serialport = require("serialport-electron");
 var arduino = require("./arduino");
@@ -45,8 +46,6 @@ function readFlash (port, timeout, progress, completion) {
       arduino.pulseDTRAndWaitForNewPort( port, timeout, progress, callback );
     },
     function (newPort, callback) {
-      var called = false;
-
       var avrdude = new Avrdude();
       var args = [
         "-C" + avrdude.config(),
@@ -58,28 +57,7 @@ function readFlash (port, timeout, progress, completion) {
         "-U",
         "flash:r:" + path.resolve(file.path) + ":i"
       ];
-      var process = avrdude.run(args);
-      process.stderr.setEncoding('utf8');
-      process.stderr.on("data", function (chunk) {
-        progress( chunk );
-      });
-      process.on("error", function (err) {
-        if (!called) {
-          called = true;
-          callback( err );
-        }
-      });
-      process.on("exit", function (code, signal) {
-        if (code !== 0) {
-          if (!called) {
-            called = true;
-            callback( "avrdude failed with exit code: "+code );
-          }
-        }
-        else { // success
-          callback();
-        }
-      });
+      avrdude.run(args, progress, callback);
     },
   ], function (err) {
     completion( err, file.path );
@@ -89,12 +67,9 @@ function readFlash (port, timeout, progress, completion) {
 function writeFlash(port, newHexPath, timeout, progress, completion) {
   async.waterfall([
     function (callback) {
-      progress( "Writing new firmware\n" );
       arduino.pulseDTRAndWaitForNewPort( port, timeout, progress, callback );
     },
     function (newPort, callback) {
-      var called = false;
-
       var avrdude = new Avrdude();
       var args = [
         "-C" + avrdude.config(),
@@ -106,28 +81,7 @@ function writeFlash(port, newHexPath, timeout, progress, completion) {
         "-U",
         "flash:w:" + path.resolve(newHexPath) + ":i"
       ];
-      var process = avrdude.run(args);
-      process.stderr.setEncoding('utf8');
-      process.stderr.on("data", function (chunk) {
-        progress( chunk );
-      });
-      process.on("error", function (err) {
-        if (!called) {
-          called = true;
-          callback( err );
-        }
-      });
-      process.on("exit", function (code, signal) {
-        if (code !== 0) {
-          if (!called) {
-            called = true;
-            callback( "avrdude failed with exit code: "+code );
-          }
-        }
-        else { // success
-          callback();
-        }
-      });
+      avrdude.run(args, progress, callback);
     },
   ], function (err) {
     completion( err );

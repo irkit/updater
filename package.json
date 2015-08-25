@@ -1,7 +1,7 @@
 {
-  "name": "irkit-updater",
+  "name": "IRKit Updater",
   "version": "0.1.0",
-  "main": "main.js",
+  "main": "javascripts/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,17 +10,30 @@
   ],
   "author": "o.masakazu@gmail.com",
   "license": "MIT",
-  "description": "",
+  "description": "IRKit Updater updates IRKit's firmware",
   "dependencies": {
     "async": "^1.4.2",
     "temp": "^0.8.3",
     "request": "^2.60.0",
     "serialport-electron": "1.7.4-electron-0.30.4",
-    "underscore" : "^1.5.2"
+    "underscore": "^1.5.2"
   },
   "devDependencies": {
+    "del": "^1.2.1",
+    "electron-packager": "^5.0.2",
     "electron-prebuilt": "^0.30.4",
     "electron-rebuild": "^0.2.5",
+    "gulp": "^3.9.0",
+    "gulp-compass": "^2.1.0",
+    "gulp-livereload": "^3.8.0",
+    "gulp-sass": "^2.0.4",
+    "gulp-useref": "^1.3.0",
+    "run-sequence": "^1.1.2",
     "tap": "^1.3.2"
-  }
+  },
+  "repository":   {
+    "type": "git",
+    "url" : "https://github.com/irkit/updater.git"
+  },
+  "readmeFilename": "README.markdown"
 }

@@ -3,7 +3,6 @@ var path = require('path');
 var irkit = require('./irkit');
 var async = require('async');
 var github = require('./github');
-var Avrdude = require('./avrdude');
 var passwordExtractor = require("./password_extractor");
 var passwordReplacer = require("./intelhex_replacer");
 var versionExtractor = require("./version_extractor");
@@ -131,6 +130,7 @@ module.exports = {
       },
       sleepStep(5),
       function (callback) {
+        progress( "Writing new firmware\n" );
         irkit.writeFlash( port, hexFilePath, 10000, progress, callback );
       },
       sleepStep(5),
