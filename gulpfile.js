@@ -71,11 +71,16 @@ gulp.task('build:scripts', function () {
   ;
 });
 
-// gulp.task('build:modules', function () {
-//   return gulp.src(['node_modules/**/*.js'])
-//     .pipe(gulp.dest(buildDir))
-//   ;
-// });
+gulp.task('build:modules', function () {
+  var packageJSON = require('./package.json');
+  var modules = Object.keys(packageJSON.dependencies);
+  var srces = modules.map(function (module) {
+    return "node_modules/"+module+"/**/*";
+  });
+  return gulp.src(srces, { base: '.' })
+    .pipe(gulp.dest(buildDir))
+  ;
+});
 
 gulp.task('build:etc', function () {
   return gulp.src(['etc/**', 'bin/**', 'fonts/**', 'images/**', 'package.json'], { base: '.' })
@@ -83,7 +88,13 @@ gulp.task('build:etc', function () {
   ;
 });
 
-gulp.task('build', [ 'build:html', 'build:sass', 'build:scripts', 'build:etc' ], function () {
+gulp.task('build', [
+  'build:html',
+  'build:sass',
+  'build:scripts',
+  'build:modules',
+  'build:etc'
+], function () {
 });
 
 gulp.task('cleanbuild', function (done) {
