@@ -1,3 +1,4 @@
+'use strict';
 var serialport = require("serialport-electron")
 ,   _          = require("underscore")
 ,   async      = require("async")
@@ -31,7 +32,7 @@ module.exports = {
             return;
           }
 
-          progress( "Detected new serialport: " + port.comName + "\n" );
+          progress( "Detected new serialport: " + port.comName );
           completion( null, port.comName );
         });
       });

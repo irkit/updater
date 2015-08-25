@@ -6,6 +6,9 @@ build:
 run:
 	node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .
 
+rundist:
+	open dist/darwin/IRKit\ Updater-darwin-x64/IRKit\ Updater.app
+
 test:
 	node node_modules/tap/bin/run.js test/*.js
 
