@@ -1,0 +1,65 @@
+[Strings]
+DriverPackageDisplayName="IRKit USB Driver"
+ManufacturerName="maaash.jp"
+ServiceName="USB RS-232 Emulation Driver"
+irkit.sketch.name="IRKit"
+leonardo.bootloader.name="Arduino Leonardo bootloader"
+
+[DefaultInstall]
+CopyINF=IRKit.inf
+
+[Version]
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Signature="$Windows NT$"
+Provider=%ManufacturerName%
+DriverPackageDisplayName=%DriverPackageDisplayName%
+DriverVer=01/04/2013,1.0.0.0
+
+[Manufacturer]
+%ManufacturerName%=DeviceList, NTamd64, NTia64
+
+[DestinationDirs]
+FakeModemCopyFileSection=12
+DefaultDestDir=12
+
+[DeviceList]
+%irkit.sketch.name%=DriverInstall, USB\VID_1D50&PID_6085
+%irkit.sketch.name%=DriverInstall, USB\VID_1D50&PID_6085&MI_00
+%irkit.sketch.name%=DriverInstall, USB\VID_1D50&PID_6085&REV_0100
+%leonardo.bootloader.name%=DriverInstall, USB\VID_2341&PID_0036
+
+[DeviceList.NTamd64]
+%irkit.sketch.name%=DriverInstall, USB\VID_1D50&PID_6085
+%irkit.sketch.name%=DriverInstall, USB\VID_1D50&PID_6085&MI_00
+%irkit.sketch.name%=DriverInstall, USB\VID_1D50&PID_6085&REV_0100
+%leonardo.bootloader.name%=DriverInstall, USB\VID_2341&PID_0036
+
+[DeviceList.NTia64]
+%irkit.sketch.name%=DriverInstall, USB\VID_1D50&PID_6085
+%irkit.sketch.name%=DriverInstall, USB\VID_1D50&PID_6085&MI_00
+%irkit.sketch.name%=DriverInstall, USB\VID_1D50&PID_6085&REV_0100
+%leonardo.bootloader.name%=DriverInstall, USB\VID_2341&PID_0036
+
+[DriverInstall]
+include=mdmcpq.inf,usb.inf
+CopyFiles = FakeModemCopyFileSection
+AddReg=DriverAddReg
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern 
+HKR,,NTMPDriver,,usbser.sys 
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.Services]
+include=mdmcpq.inf
+AddService=usbser, 0x00000002, DriverService
+
+[DriverService]
+DisplayName=%ServiceName%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys
+LoadOrderGroup=Base
+
