@@ -6,6 +6,9 @@ build:
 run:
 	node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .
 
+dist:
+	node_modules/gulp/bin/gulp.js dist
+
 rundist:
 	open dist/darwin/IRKit\ Updater-darwin-x64/IRKit\ Updater.app
 
@@ -15,4 +18,4 @@ test:
 watch:
 	node_modules/gulp/bin/gulp.js watch
 
-.PHONY: build run test
+.PHONY: build run dist rundist test watch
