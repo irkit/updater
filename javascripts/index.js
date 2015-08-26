@@ -1,3 +1,5 @@
+'use strict';
+var remote = require('remote');
 var updater = require('./javascripts/lib/updater');
 window.onload = function () {
 
@@ -38,6 +40,10 @@ window.onload = function () {
           .tooltip("fixTitle");
       });
   });
+
+  if ((typeof enableDevTools !== 'undefined') && enableDevTools) {
+    remote.getCurrentWindow().openDevTools();
+  }
 };
 
 function showUpdateView(port, release) {
