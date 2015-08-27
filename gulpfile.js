@@ -110,6 +110,20 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
       .pipe(gulp.dest(appPath))
     ;
   });
+  gulp.task(taskName+":makelproj", function (done) {
+    if (platform !== 'darwin') {
+      return done();
+    }
+    var asarPath = glob.sync(appPath+"/**/atom.asar");
+    if (asarPath.length !== 1) {
+      return done( "Expected asarPath.length to be 1 but got: " + asarPath.join(", ") );
+    }
+    var languages = [ 'ja' ];
+    languages.forEach(function (language) {
+      fs.mkdirSync( path.join(path.dirname(asarPath[0]), language+'.lproj') );
+    });
+    return done();
+  });
   gulp.task(taskName+":zip", function (done) {
     var dest = [appName, platform, arch, appVersion].join("-") + ".zip";
     var cwd = path.join(distDir, platform);
@@ -131,6 +145,7 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
     runSequence( taskName+":packager",
                  taskName+":copyserialnode",
                  taskName+":copydriver",
+                 taskName+":makelproj",
                  taskName+":zip",
                  done );
   });
@@ -213,7 +228,7 @@ gulp.task('build:modules', function () {
 });
 
 gulp.task('build:etc', function () {
-  return gulp.src(['etc/**', 'bin/**', 'fonts/**', 'images/**', 'package.json'], { base: '.' })
+  return gulp.src(['etc/**', 'bin/**', 'fonts/**', 'images/**', 'package.json', 'po/**'], { base: '.' })
     .pipe(gulp.dest(buildDir))
   ;
 });
