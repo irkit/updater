@@ -7364,6 +7364,8 @@ p {
   border-radius: 4px;
   padding: 10px;
   font-size: 12px;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 #update-log-container {

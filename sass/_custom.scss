@@ -39,6 +39,8 @@ p {
     border-radius: 4px;
     padding: 10px;
     font-size: $font-size-small;
+    -webkit-user-select: text;
+    user-select: text;
 }
 
 #update-log-container {
