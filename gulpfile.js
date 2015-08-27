@@ -45,7 +45,17 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
       arch: arch,
       platform: platform,
       out: distDir + '/' + platform,
-      version: electronVersion
+      version: electronVersion,
+      icon: 'images/AppIcon.icns',
+      'app-bundle-id': 'jp.maaash.irkitupdater',
+      'app-version': appVersion,
+      'version-string': {
+        CompanyName: 'maaash.jp',
+        FileDescription: appName,
+        FileVersion: appVersion,
+        ProductVersion: appVersion,
+        ProductName: appName
+      }
     }, done);
   });
   gulp.task(taskName+":copyserialnode", function (done) {
