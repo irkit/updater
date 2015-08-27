@@ -48,8 +48,11 @@ window.onload = function () {
 
 function showUpdateView(port, release) {
   $("#update").show();
+  $("#update-label-port").text(gettext("IRKit connected on port"));
   $("#update-port").text(port);
+  $("#update-label-release").text(gettext("Updating to version"));
   $("#update-release").text(release.name);
+  $("#update-error-message").text(gettext("Update failed! Please re-connect IRKit and try again"));
   $("#update-button").click( function () {
     $("#update-button").attr( "disabled", true );
     $("#update-log-container").show();

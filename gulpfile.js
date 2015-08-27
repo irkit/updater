@@ -1,5 +1,6 @@
 'use strict';
 
+var spawn = require('child_process').spawn;
 var gulp = require('gulp');
 var useref = require('gulp-useref');
 var livereload = require('gulp-livereload');
@@ -40,6 +41,19 @@ gulp.task('notify', function (done) {
     icon: path.join(__dirname, 'images', 'AppIcon.iconset', 'icon_256x256.png'),
     sound: 'Submarine'
   }, done);
+});
+
+gulp.task('l10n:extract', function (done) {
+  var proc = spawn('node_modules/jsxgettext/lib/cli.js', _.flatten([ '-o', 'po/ja.po', '-j', glob.sync('javascripts/**/*.js') ]));
+  proc.stdout.setEncoding('utf8');
+  proc.stderr.setEncoding('utf8');
+  proc.stdout.on('data', function(data){
+    console.log("stdout: "+data);
+  });
+  proc.stderr.on('data', function(data){
+    console.log("stderr: "+data);
+  });
+  proc.on('exit', done);
 });
 
 gulp.task('watch:sass', function () {
