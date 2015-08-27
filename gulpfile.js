@@ -71,6 +71,16 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
       .pipe(gulp.dest(path.dirname(dstfiles[0])))
     ;
   });
+  gulp.task(taskName+":copydriver", function (done) {
+    if (platform === 'darwin') {
+      return done();
+    }
+    // copy windows driver to a visible place
+    var src = path.join("windows-driver", "IRKit.inf");
+    return gulp.src(src)
+      .pipe(gulp.dest(appPath))
+    ;
+  });
   gulp.task(taskName+":zip", function (done) {
     var dest = [appName, platform, arch, appVersion].join("-") + ".zip";
     var cwd = path.join(distDir, platform);
@@ -91,6 +101,7 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
   gulp.task(taskName, function (done) {
     runSequence( taskName+":packager",
                  taskName+":copyserialnode",
+                 taskName+":copydriver",
                  taskName+":zip",
                  done );
   });
