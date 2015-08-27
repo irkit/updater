@@ -18,6 +18,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var merge = require('merge-stream');
 var _ = require('underscore');
+var notifier = require('node-notifier');
 var packageJSON = require('./package.json');
 
 var buildDir = 'build';
@@ -30,6 +31,15 @@ gulp.task('clean', function (done) {
 
 gulp.task('watch', [ 'watch:sass' ], function () {
   livereload.listen();
+});
+
+gulp.task('notify', function (done) {
+  notifier.notify({
+    title: 'Gulp task',
+    message: 'done!!',
+    icon: path.join(__dirname, 'images', 'AppIcon.iconset', 'icon_256x256.png'),
+    sound: 'Submarine'
+  }, done);
 });
 
 gulp.task('watch:sass', function () {
@@ -114,7 +124,11 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
   return taskName;
 });
 gulp.task('dist', function (done) {
-  var tasks = [ 'clean', 'build', distTasks, done ];
+  var tasks = [ 'clean',
+                'build',
+                distTasks,
+                'notify',
+                done ];
   var flattened = Array.prototype.concat.apply([], tasks); // serialize distTasks too
   runSequence.apply( null, flattened );
 });
