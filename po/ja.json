@@ -1,0 +1,19 @@
+{
+   "ja": {
+      "": {
+         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: LANGUAGE <LL@li.org>\nReport-Msgid-Bugs-To: \nPO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\nLanguage: \nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-08-27 12:57+0000\n"
+      },
+      "IRKit connected on port": [
+         null,
+         "IRKitを接続しているポート"
+      ],
+      "Updating to version": [
+         null,
+         "書き込むバージョン"
+      ],
+      "Update failed! Please re-connect IRKit and try again": [
+         null,
+         "書き込み失敗！！ IRKitを一度コンピュータから抜き、挿し直して再度お試しください"
+      ]
+   }
+}

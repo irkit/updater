@@ -1,6 +1,7 @@
 'use strict';
 
 var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 var gulp = require('gulp');
 var useref = require('gulp-useref');
 var livereload = require('gulp-livereload');
@@ -45,16 +46,14 @@ gulp.task('notify', function (done) {
 
 gulp.task('l10n:extract', function (done) {
   var proc = spawn('node_modules/jsxgettext/lib/cli.js', _.flatten([ '-o', 'po/ja.po', '-j', glob.sync('javascripts/**/*.js') ]));
-  proc.stdout.setEncoding('utf8');
-  proc.stderr.setEncoding('utf8');
-  proc.stdout.on('data', function(data){
-    console.log("stdout: "+data);
-  });
-  proc.stderr.on('data', function(data){
-    console.log("stderr: "+data);
-  });
   proc.on('exit', done);
 });
+
+gulp.task('l10n:po2json', [ 'l10n:extract' ], function (done) {
+  exec('node etc/po2json.js -p po/ja.po > po/ja.json', done);
+});
+
+gulp.task('l10n', [ 'l10n:po2json' ], function (done) {});
 
 gulp.task('watch:sass', function () {
   gulp.watch('sass/**/*.scss', ['build:sass']);
