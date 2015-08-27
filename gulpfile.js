@@ -97,10 +97,9 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
   return taskName;
 });
 gulp.task('dist', function (done) {
-  runSequence( 'clean',
-               'build',
-               distTasks,
-               done );
+  var tasks = [ 'clean', 'build', distTasks, done ];
+  var flattened = Array.prototype.concat.apply([], tasks); // serialize distTasks too
+  runSequence.apply( null, flattened );
 });
 
 gulp.task('build:sass', function () {
