@@ -1,6 +1,5 @@
 'use strict';
 var serialport = require("serialport-electron")
-,   _          = require("underscore")
 ,   async      = require("async")
 ,   pulser     = require("./pulser")
 ;
@@ -8,9 +7,9 @@ var serialport = require("serialport-electron")
 module.exports = {
   pulseDTRAndWaitForNewPort: function(port_name, wait_milliseconds, progress, completion) {
     serialport.list( function(err, before_ports) {
-      var found = _.find(before_ports, function(before_port) {
+      var found = before_ports.filter( function(before_port, index) {
         return before_port.comName === port_name;
-      });
+      }).length;
       if (! found) {
         completion( "No port: " + port_name + " found" );
         return;
@@ -46,11 +45,11 @@ function waitForNewSerialPort (before_ports, wait_milliseconds, progress, comple
   var new_port, serialport_err, ports = before_ports;
   async.until(
     function () {
-      new_port = _.find( ports, function(port) {
-        return _.every( before_ports, function(before_port) {
+      new_port = ports.filter( function(port, index) {
+        return before_ports.every( function(before_port) {
           return before_port.comName !== port.comName;
         });
-      });
+      })[0];
       if (new_port) {
         progress( "New port found: " + new_port.comName + "\n" );
         return true;

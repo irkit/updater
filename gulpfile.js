@@ -13,6 +13,12 @@ var fs = require('fs');
 var path = require('path');
 var archiver = require('archiver');
 var glob = require('glob');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var merge = require('merge-stream');
+var _ = require('underscore');
+var packageJSON = require('./package.json');
 
 var buildDir = 'build';
 var distDir = 'dist';
@@ -35,7 +41,7 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
   var platform = platformAndArch[0];
   var arch = platformAndArch[1];
   var appName = 'IRKit Updater';
-  var appVersion = require('./package.json').version;
+  var appVersion = packageJSON.version;
   var appPath = path.join(distDir, platform, [appName, platform, arch].join("-"));
   var taskName = [ 'dist', platform, arch ].join(":");
   gulp.task(taskName+":packager", function (done) {
@@ -71,6 +77,16 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
       .pipe(gulp.dest(path.dirname(dstfiles[0])))
     ;
   });
+  gulp.task(taskName+":copydriver", function (done) {
+    if (platform === 'darwin') {
+      return done();
+    }
+    // copy windows driver to a visible place
+    var src = path.join("windows-driver", "IRKit.inf");
+    return gulp.src(src)
+      .pipe(gulp.dest(appPath))
+    ;
+  });
   gulp.task(taskName+":zip", function (done) {
     var dest = [appName, platform, arch, appVersion].join("-") + ".zip";
     var cwd = path.join(distDir, platform);
@@ -91,6 +107,7 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
   gulp.task(taskName, function (done) {
     runSequence( taskName+":packager",
                  taskName+":copyserialnode",
+                 taskName+":copydriver",
                  taskName+":zip",
                  done );
   });
@@ -129,14 +146,43 @@ gulp.task('build:scripts', function () {
 });
 
 gulp.task('build:modules', function () {
-  var packageJSON = require('./package.json');
-  var modules = Object.keys(packageJSON.dependencies);
-  var srces = modules.map(function (module) {
-    return "node_modules/"+module+"/**/*";
+  // thanks to http://qiita.com/Quramy/items/90d61ff37ca1b95a7f6d
+  function mainFile(module) {
+    var main = require('./'+path.join('node_modules',module,'package.json')).main;
+    if (path.extname(main) == "") {
+      main = main + ".js"; // for serialport-electron
+    }
+    return path.normalize(main);
+  }
+  
+  var dependencies = Object.keys(packageJSON.dependencies);
+  var defaultModules = ['assert', 'buffer', 'console', 'constants', 'crypto', 'domain', 'events', 'fs', 'http', 'https', 'os', 'path', 'punycode', 'querystring', 'stream', 'string_decoder', 'timers', 'tty', 'url', 'util', 'vm', 'zlib'];
+  var nativeModules = ['./serialport.node'];
+  var browserifiedModules = dependencies.map( function (module) {
+    var main = mainFile(module);
+    var b = browserify(path.join('node_modules',module,main), {
+      detectGlobals: false,
+      standalone: main
+    });
+    _.flatten([defaultModules, nativeModules]).forEach(function(module) {
+      b.exclude(module);
+    });
+    var mainStream = b.bundle().
+      pipe(source(main)).
+      pipe(buffer()).
+      pipe(gulp.dest(path.join(buildDir,'node_modules',module)))
+    ;
+    var packageJSONStream = gulp.src(path.join('node_modules',module,'package.json')).
+          pipe(gulp.dest(path.join(buildDir,'node_modules',module)))
+    ;
+    return [mainStream, packageJSONStream];
   });
-  return gulp.src(srces, { base: '.' })
-    .pipe(gulp.dest(buildDir))
+  var serialportPath = 'node_modules/serialport-electron/';
+  var serialportStream = gulp.src(path.join(serialportPath, 'serialport.node')).
+        pipe(gulp.dest(path.join(buildDir, serialportPath)))
   ;
+  
+  return merge(_.flatten([browserifiedModules, serialportStream]));
 });
 
 gulp.task('build:etc', function () {
