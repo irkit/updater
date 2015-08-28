@@ -8,6 +8,8 @@ var livereload = require('gulp-livereload');
 var sass = require('gulp-sass');
 var compass = require('gulp-compass');
 var rename = require('gulp-rename');
+var insert = require('gulp-insert');
+var concat = require('gulp-concat');
 var packager = require('electron-packager');
 var del = require('del');
 var runSequence = require('run-sequence');
@@ -124,6 +126,28 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
     });
     return done();
   });
+  gulp.task(taskName+":copylicense", function (done) {
+    var ourStream = gulp.src('LICENSE').
+          pipe(gulp.dest(appPath))
+    ;
+    var electronStream = gulp.src(path.join(appPath, 'LICENSE')).
+          pipe(insert.prepend("ELECTRON\nhttps://github.com/atom/electron\n\n")).
+          pipe(insert.append("\n\n"))
+    ;
+    var dependencies = Object.keys(packageJSON.dependencies);
+    var streams = dependencies.map( function (dependency) {
+      var repo = require('./'+path.join('node_modules',dependency,'package.json')).repository.url;
+      return gulp.src(path.join('node_modules',dependency,'LICENSE')).
+        pipe(insert.prepend([dependency, repo].join("\n")+"\n\n")).
+        pipe(insert.append("\n\n"))
+      ;
+    });
+    var acknowledgements = merge(_.flatten([electronStream,streams])).
+      pipe(concat("ACKNOWLEDGEMENTS")).
+      pipe(gulp.dest(appPath))
+    ;
+    return merge([ acknowledgements, ourStream ]);
+  });
   gulp.task(taskName+":zip", function (done) {
     var dest = [appName, platform, arch, appVersion].join("-") + ".zip";
     var cwd = path.join(distDir, platform);
@@ -143,9 +167,12 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
   });
   gulp.task(taskName, function (done) {
     runSequence( taskName+":packager",
-                 taskName+":copyserialnode",
-                 taskName+":copydriver",
-                 taskName+":makelproj",
+                 [
+                   taskName+":copyserialnode",
+                   taskName+":copydriver",
+                   taskName+":makelproj",
+                   taskName+":copylicense"
+                 ],
                  taskName+":zip",
                  done );
   });
