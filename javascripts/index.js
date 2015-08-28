@@ -1,6 +1,15 @@
 'use strict';
+var path = require('path');
 var remote = require('remote');
+var ejs = require('ejs');
 var updater = require('./javascripts/lib/updater');
+var Translator = require('./javascripts/lib/translator');
+var languagesJSONFiles = [ 'ja' ].map(function (lang) {
+  return path.join( __dirname, 'po', lang+'.json' );
+});
+var t = new Translator(languagesJSONFiles);
+t.setLanguage( navigator.language );
+
 window.onload = function () {
 
   $("#loading").show();
@@ -48,8 +57,11 @@ window.onload = function () {
 
 function showUpdateView(port, release) {
   $("#update").show();
+  $("#update-label-port").text(t.gettext("IRKit connected on port"));
   $("#update-port").text(port);
+  $("#update-label-release").text(t.gettext("Updating to version"));
   $("#update-release").text(release.name);
+  $("#update-error-message").text(t.gettext("Update failed! Please re-connect IRKit and try again"));
   $("#update-button").click( function () {
     $("#update-button").attr( "disabled", true );
     $("#update-log-container").show();
@@ -62,7 +74,9 @@ function showUpdateView(port, release) {
                      if (error === null || error === undefined) {
                        appendUpdateLog("Finished successfully!\n");
                        $("#update-success").show();
-                       $("#update-success-message").text("Update from "+fromVersion+" to "+toVersion+" finished successfully!");
+                       var template = t.gettext("Update from <%= fromVersion %> to <%= toVersion %> finished successfully!");
+                       $("#update-success-message").
+                         text(ejs.render(template, { fromVersion: fromVersion, toVersion: toVersion }));
                      }
                      else {
                        appendUpdateLog("Finished with error: "+error+"\n");

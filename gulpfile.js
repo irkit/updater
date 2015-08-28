@@ -1,5 +1,7 @@
 'use strict';
 
+var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 var gulp = require('gulp');
 var useref = require('gulp-useref');
 var livereload = require('gulp-livereload');
@@ -41,6 +43,17 @@ gulp.task('notify', function (done) {
     sound: 'Submarine'
   }, done);
 });
+
+gulp.task('l10n:extract', function (done) {
+  var proc = spawn('node_modules/jsxgettext/lib/cli.js', _.flatten([ '-o', 'po/ja.po', '-j', glob.sync('javascripts/**/*.js') ]));
+  proc.on('exit', done);
+});
+
+gulp.task('l10n:po2json', [ 'l10n:extract' ], function (done) {
+  exec('node etc/po2json.js -p po/ja.po > po/ja.json', done);
+});
+
+gulp.task('l10n', [ 'l10n:po2json' ], function (done) {});
 
 gulp.task('watch:sass', function () {
   gulp.watch('sass/**/*.scss', ['build:sass']);
@@ -97,6 +110,20 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
       .pipe(gulp.dest(appPath))
     ;
   });
+  gulp.task(taskName+":makelproj", function (done) {
+    if (platform !== 'darwin') {
+      return done();
+    }
+    var asarPath = glob.sync(appPath+"/**/atom.asar");
+    if (asarPath.length !== 1) {
+      return done( "Expected asarPath.length to be 1 but got: " + asarPath.join(", ") );
+    }
+    var languages = [ 'ja' ];
+    languages.forEach(function (language) {
+      fs.mkdirSync( path.join(path.dirname(asarPath[0]), language+'.lproj') );
+    });
+    return done();
+  });
   gulp.task(taskName+":zip", function (done) {
     var dest = [appName, platform, arch, appVersion].join("-") + ".zip";
     var cwd = path.join(distDir, platform);
@@ -118,6 +145,7 @@ var distTasks = platformAndArchs.map( function (platformAndArch) {
     runSequence( taskName+":packager",
                  taskName+":copyserialnode",
                  taskName+":copydriver",
+                 taskName+":makelproj",
                  taskName+":zip",
                  done );
   });
@@ -200,7 +228,7 @@ gulp.task('build:modules', function () {
 });
 
 gulp.task('build:etc', function () {
-  return gulp.src(['etc/**', 'bin/**', 'fonts/**', 'images/**', 'package.json'], { base: '.' })
+  return gulp.src(['etc/**', 'bin/**', 'fonts/**', 'images/**', 'package.json', 'po/**'], { base: '.' })
     .pipe(gulp.dest(buildDir))
   ;
 });
