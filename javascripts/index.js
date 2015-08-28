@@ -1,6 +1,7 @@
 'use strict';
 var path = require('path');
 var remote = require('remote');
+var ejs = require('ejs');
 var updater = require('./javascripts/lib/updater');
 var Translator = require('./javascripts/lib/translator');
 var languagesJSONFiles = [ 'ja' ].map(function (lang) {
@@ -73,7 +74,9 @@ function showUpdateView(port, release) {
                      if (error === null || error === undefined) {
                        appendUpdateLog("Finished successfully!\n");
                        $("#update-success").show();
-                       $("#update-success-message").text("Update from "+fromVersion+" to "+toVersion+" finished successfully!");
+                       var template = t.gettext("Update from <%= fromVersion %> to <%= toVersion %> finished successfully!");
+                       $("#update-success-message").
+                         text(ejs.render(template, { fromVersion: fromVersion, toVersion: toVersion }));
                      }
                      else {
                        appendUpdateLog("Finished with error: "+error+"\n");

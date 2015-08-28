@@ -8,16 +8,20 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2015-08-27 12:47+0000\n"
+"POT-Creation-Date: 2015-08-28 01:53+0000\n"
 
-#: javascripts/index.js:51
+#: javascripts/index.js:60
 msgid "IRKit connected on port"
 msgstr "IRKitを接続しているポート"
 
-#: javascripts/index.js:53
+#: javascripts/index.js:62
 msgid "Updating to version"
-msgstr "書き込むバージョン"
+msgstr "アップデート先のバージョン"
 
-#: javascripts/index.js:55
+#: javascripts/index.js:64
 msgid "Update failed! Please re-connect IRKit and try again"
-msgstr "書き込み失敗！！ IRKitを一度コンピュータから抜き、挿し直して再度お試しください"
+msgstr "アップデート失敗！ IRKitを一度コンピュータから抜き、挿し直して再度お試しください"
+
+#: javascripts/index.js:77
+msgid "Update from <%= fromVersion %> to <%= toVersion %> finished successfully!"
+msgstr "成功！ <%= fromVersion %> から <%= toVersion %> にアップデートしました"
