@@ -4,7 +4,7 @@ build:
 	node_modules/gulp/bin/gulp.js build
 
 run:
-	node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .
+	NODE_ENV=development node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .
 
 dist:
 	node_modules/gulp/bin/gulp.js dist
