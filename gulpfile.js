@@ -2,6 +2,7 @@
 
 var spawn = require('child_process').spawn;
 var exec = require('child_process').exec;
+
 var gulp = require('gulp');
 var useref = require('gulp-useref');
 var livereload = require('gulp-livereload');
@@ -10,6 +11,10 @@ var compass = require('gulp-compass');
 var rename = require('gulp-rename');
 var insert = require('gulp-insert');
 var concat = require('gulp-concat');
+var git = require('gulp-git');
+var bump = require('gulp-bump');
+var tag_version = require('gulp-tag-version');
+
 var packager = require('electron-packager');
 var del = require('del');
 var runSequence = require('run-sequence');
@@ -28,6 +33,18 @@ var packageJSON = require('./package.json');
 var buildDir = 'build';
 var distDir = 'dist';
 var electronVersion = '0.30.4';
+
+function incrementVersion(importance) {
+  return gulp.src(['./package.json'])
+    .pipe(bump({type: importance}))
+    .pipe(gulp.dest('./'))
+    .pipe(git.commit('Version++'))
+    .pipe(tag_version());
+}
+
+gulp.task('bump:patch', function() { return incrementVersion('patch'); });
+gulp.task('bump:minor', function() { return incrementVersion('minor'); });
+gulp.task('bump:major', function() { return incrementVersion('major'); });
 
 gulp.task('clean', function (done) {
   del([ buildDir, distDir ], done);
