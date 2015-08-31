@@ -6,9 +6,12 @@ var Avrdude = require("./avrdude");
 var async = require("async");
 var temp = require("temp");
 temp.track(); // automatic cleanup
+var util = require('util');
+var debuglog = util.debuglog('irkit');
 
 function serialports (callback) {
   serialport.list( function (err, ports) {
+    debuglog('serialport.list err: %j, ports: %j', err, ports);
     if (err) {
       callback( err, null );
       return;
