@@ -5,6 +5,7 @@ var path = require('path');
 var os = require('os');
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var Menu = require('menu');
+var packageJSON = require('../package.json');
 
 var appName = 'IRKit Updater';
 
@@ -52,7 +53,7 @@ function makeMenu (win) {
         label: appName,
         submenu: [
           {
-            label: 'About '+appName,
+            label: 'About ' + appName + ' (v' + packageJSON.version + ')',
             click: function() { require('shell').openExternal('http://github.com/irkit/updater'); }
           },
           {
@@ -90,7 +91,7 @@ function makeMenu (win) {
         label: '&File',
         submenu: [
           {
-            label: '&About '+appName,
+            label: '&About ' + appName + ' (v' + packageJSON.version + ')',
             click: function() { require('shell').openExternal('http://github.com/irkit/updater'); }
           },
           {
