@@ -21,8 +21,10 @@ function serialports (callback) {
 }
 
 function isIRKitPort (port) {
-  return port.pnpId.match( /PID_6085/ ) || // Windows
-         (port.productId === "0x6085"); // MacOS
+  return port.pnpId.match( /PID_6085/ ) || // Windows IRKit
+         port.pnpId.match( /PID_8036/ ) || // Windows Arduino Leonardo
+         (port.productId === "0x6085") || // MacOS IRKit
+         (port.productId === "0x8036"); // MacOS Arduino Leonardo
 }
 
 function waitPorts (timeout, callback) {
