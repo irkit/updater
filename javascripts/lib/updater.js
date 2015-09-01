@@ -10,10 +10,7 @@ var temp = require("temp");
 temp.track(); // automatic cleanup
 
 var Translator = require('./translator');
-var languagesJSONFiles = [ 'ja' ].map(function (lang) {
-  return path.join( __dirname, '..', 'po', lang+'.json' );
-});
-var t = new Translator(languagesJSONFiles);
+var t = new Translator(['ja']);
 t.setLanguage( navigator.language );
 
 module.exports = {

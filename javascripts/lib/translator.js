@@ -2,9 +2,12 @@
 
 var path = require('path');
 
-var Translator = function (files) {
+var Translator = function (languages) {
   this.language = null;
   this.languages = {};
+  var files = languages.map( function (lang) {
+    return path.join( '..', '..', 'po', lang + '.json' );
+  });
   this._parseFiles(files);
 };
 

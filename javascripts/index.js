@@ -4,10 +4,7 @@ var remote = require('remote');
 var ejs = require('ejs');
 var updater = require('./javascripts/lib/updater');
 var Translator = require('./javascripts/lib/translator');
-var languagesJSONFiles = [ 'ja' ].map(function (lang) {
-  return path.join( __dirname, 'po', lang+'.json' );
-});
-var t = new Translator(languagesJSONFiles);
+var t = new Translator(['ja']);
 t.setLanguage( navigator.language );
 
 window.onload = function () {
