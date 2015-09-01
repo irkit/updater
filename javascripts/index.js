@@ -20,11 +20,11 @@ window.onload = function () {
       return;
     }
     if (foundPort === null) {
-      showErrorMessage( "IRKit not connected. Connect IRKit with a USB cable to this machine and restart" );
+      showErrorMessage( t.gettext("IRKit not connected. Connect IRKit with a USB cable to this machine and restart") );
       return;
     }
     if (availableRelease === null) {
-      showErrorMessage( "No available releases found on github.com/irkit/device/releases" );
+      showErrorMessage( t.gettext("No available releases found on https://github.com/irkit/device/releases") );
       return;
     }
 

@@ -9,6 +9,13 @@ var versionExtractor = require("./version_extractor");
 var temp = require("temp");
 temp.track(); // automatic cleanup
 
+var Translator = require('./translator');
+var languagesJSONFiles = [ 'ja' ].map(function (lang) {
+  return path.join( __dirname, '..', 'po', lang+'.json' );
+});
+var t = new Translator(languagesJSONFiles);
+t.setLanguage( navigator.language );
+
 module.exports = {
   // callback(err, foundPort, availableRelease)
   onReady: function(callback) {
@@ -19,7 +26,7 @@ module.exports = {
       irkit.serialports,
       function (irkitPorts, callback) {
         if (irkitPorts.length !== 1) {
-          callback( "IRKit not connected. Connect IRKit with a USB cable to this machine and restart" );
+          callback( t.gettext("IRKit not connected. Connect IRKit with a USB cable to this machine and restart") );
           return;
         }
 
@@ -41,7 +48,7 @@ module.exports = {
         });
 
         if (releasesWithAssets.length === 0) {
-          callback( "No available versions found on https://github.com/irkit/device/releases" );
+          callback( t.gettext("No available releases found on https://github.com/irkit/device/releases") );
           return;
         }
 
