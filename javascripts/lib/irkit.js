@@ -43,7 +43,10 @@ function waitPorts (timeout, callback) {
   serialports( retryIfNeeded );
 }
 
-function readFlash (port, timeout, progress, completion) {
+function readROM (device, port, timeout, progress, completion) {
+  if ((device !== "flash") && (device !== "eeprom")) {
+    throw( "readROM only supports flash or eeprom" );
+  }
   var file = temp.openSync({ suffix: ".hex" }); // I know, I know but creating temp files are not gonna take much time
 
   async.waterfall([
@@ -60,13 +63,21 @@ function readFlash (port, timeout, progress, completion) {
         "-b57600",
         "-D",
         "-U",
-        "flash:r:" + path.resolve(file.path) + ":i"
+        device + ":r:" + path.resolve(file.path) + ":i"
       ];
       avrdude.run(args, progress, callback);
     },
   ], function (err) {
     completion( err, file.path );
   });
+}
+
+function readFlash (port, timeout, progress, completion) {
+  readROM( "flash", port, timeout, progress, completion );
+}
+
+function readEEPROM (port, timeout, progress, completion) {
+  readROM( "eeprom", port, timeout, progress, completion );
 }
 
 function writeFlash(port, newHexPath, timeout, progress, completion) {
@@ -98,5 +109,6 @@ module.exports = {
   serialports: serialports,
   waitPorts: waitPorts,
   readFlash: readFlash,
+  readEEPROM: readEEPROM,
   writeFlash: writeFlash
 };

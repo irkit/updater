@@ -6,6 +6,7 @@ var github = require('./github');
 var passwordExtractor = require("./password_extractor");
 var passwordReplacer = require("./intelhex_replacer");
 var versionExtractor = require("./version_extractor");
+var eepromPasswordExtractor = require("./eeprom_password_extractor");
 var temp = require("temp");
 temp.track(); // automatic cleanup
 
@@ -122,15 +123,46 @@ module.exports = {
         });
       },
       function (version, callback) {
-        progress( "Current version: "+version+"\n" );
+        progress( "\nCurrent version: "+version+"\n" );
         fromVersion = version;
         callback();
       },
       function (callback) {
-        passwordExtractor.extract(beforeHexFilePath, progress, callback);
+        passwordExtractor.extract(beforeHexFilePath, progress, function (err, password) {
+          if (err === null) {
+            callback( null, password );
+            return;
+          }
+
+          // Wi-Fi AP password wasn't found in Flash,
+          // we're going to search for it in EEPROM
+
+          var eepromHexFile = null;
+          var eepromPassword = null;
+          
+          async.waterfall([
+            sleepStep(5),
+            function (callback) {
+              progress( "Searching EEPROM for password\n" );
+              irkit.readEEPROM( port, 10000, progress, callback );
+            },
+            function (readHEXFilePath, callback) {
+              progress( "Successfully read EEPROM into "+readHEXFilePath+"\n" );
+              eepromPasswordExtractor.extract( readHEXFilePath, progress, callback );
+            },
+            function (password, callback) {
+              if (password.match(/^[0-9X]{10}$/)) {
+                callback( null, password );
+              }
+              else {
+                callback( "Password not found in EEPROM\n" );
+              }
+            }
+          ], callback);
+        });
       },
       function (password, callback) {
-        progress( "Extracted original password "+password+"\n" );
+        progress( "\nExtracted original password "+password+"\n" );
         progress( "Replacing password in hex file\n" );
 
         var file = temp.openSync({ suffix: ".hex" }); // I know, I know but creating temp files are not gonna take much time
@@ -157,7 +189,7 @@ module.exports = {
         versionExtractor.extract(flashHEXPath, progress, callback);
       },
       function (version, callback) {
-        progress( "Read version: "+version+"\n" );
+        progress( "\nRead version: "+version+"\n" );
         toVersion = version;
 
         var readVersion = version.split(".");
