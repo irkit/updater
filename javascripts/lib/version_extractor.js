@@ -10,6 +10,7 @@ module.exports = {
     ;
     var process = command.run(exec, args, progress, completion);
     var version = "";
+    // error case is handled in command.js
     process.on("exit", function (code) {
       if (code === 0) {
         completion(null, version);

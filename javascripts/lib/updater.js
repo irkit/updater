@@ -86,7 +86,9 @@ module.exports = {
     }
 
     var downloader = new github.Downloader(release);
-    var hexFilePath = null;
+    var downloadedHexFilePath = null;
+    var beforeHexFilePath = null;
+    var writingHexFilePath = null;
     var fromVersion = null;
     var toVersion = null;
 
@@ -95,7 +97,7 @@ module.exports = {
       downloader.download.bind(downloader),
       function (path, callback) {
         progress( "Successfully downloaded to "+path+"\n" );
-        hexFilePath = path;
+        downloadedHexFilePath = path;
         callback();
       },
       callProgressStep( "Reading current firmware from IRKit\n" ),
@@ -104,12 +106,20 @@ module.exports = {
       },
       function (readHEXFilePath, callback) {
         progress( "Successfully read Flash into "+readHEXFilePath+"\n" );
-        hexFilePath = readHEXFilePath;
+        beforeHexFilePath = readHEXFilePath;
         callback();
       },
       function (callback) {
         progress( "Extracting current version\n" );
-        versionExtractor.extract(hexFilePath, progress, callback);
+        versionExtractor.extract(beforeHexFilePath, progress, function (err, version) {
+          if (err !== null) {
+            progress( "Failed to extract current version, but continuing\n" );
+            callback(null, "Unknown");
+          }
+          else {
+            callback(null, version);
+          }
+        });
       },
       function (version, callback) {
         progress( "Current version: "+version+"\n" );
@@ -117,25 +127,25 @@ module.exports = {
         callback();
       },
       function (callback) {
-        passwordExtractor.extract(hexFilePath, progress, callback);
+        passwordExtractor.extract(beforeHexFilePath, progress, callback);
       },
       function (password, callback) {
         progress( "Extracted original password "+password+"\n" );
         progress( "Replacing password in hex file\n" );
 
         var file = temp.openSync({ suffix: ".hex" }); // I know, I know but creating temp files are not gonna take much time
-        passwordReplacer.replace( path.normalize(hexFilePath),
+        writingHexFilePath = file.path;
+        passwordReplacer.replace( path.normalize(downloadedHexFilePath),
                                   "XXXXXXXXXX",
                                   password,
-                                  file.path,
+                                  writingHexFilePath,
                                   progress,
                                   callback );
-        hexFilePath = file.path;
       },
       sleepStep(5),
       function (callback) {
         progress( "Writing new firmware\n" );
-        irkit.writeFlash( port, hexFilePath, 10000, progress, callback );
+        irkit.writeFlash( port, writingHexFilePath, 10000, progress, callback );
       },
       sleepStep(5),
       function (callback) {
