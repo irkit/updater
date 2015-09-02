@@ -31,7 +31,7 @@ module.exports = {
             return;
           }
 
-          progress( "Detected new serialport: " + port.comName );
+          progress( "Detected new serialport: " + port.comName + "\n" );
           completion( null, port.comName );
         });
       });
