@@ -15,29 +15,42 @@ module.exports = {
         return;
       }
 
-      pulser.pulse( port_name, progress, function(err) {
-        if (err) {
-          completion( err );
-          return;
-        }
-        waitForNewSerialPort( before_ports, wait_milliseconds, progress, function(err, port) {
-          if (err) {
-            completion( err );
-            return;
-          }
-          if (! port) {
-            var message = "Port not found within " + wait_milliseconds/1000 + " seconds";
-            completion( message );
-            return;
-          }
-
-          progress( "Detected new serialport: " + port.comName + "\n" );
-          completion( null, port.comName );
-        });
-      });
+      var trial = 0;
+      async.retry(2,
+                  function (callback) {
+                    if (trial !== 0) {
+                      progress( "Trying again\n" );
+                    }
+                    trial ++;
+                    pulseAndWaitForNewSerialPort(port_name, before_ports, wait_milliseconds, progress, callback);
+                  },
+                  completion);
     });
   }
 };
+
+function pulseAndWaitForNewSerialPort (port_name, before_ports, wait_milliseconds, progress, completion) {
+  pulser.pulse( port_name, progress, function(err) {
+    if (err) {
+      completion( err );
+      return;
+    }
+    waitForNewSerialPort( before_ports, wait_milliseconds, progress, function(err, port) {
+      if (err) {
+        completion( err );
+        return;
+      }
+      if (! port) {
+        var message = "Port not found within " + wait_milliseconds/1000 + " seconds";
+        completion( message );
+        return;
+      }
+
+      progress( "Detected new serialport: " + port.comName + "\n" );
+      completion( null, port.comName );
+    });
+  });
+}
 
 function waitForNewSerialPort (before_ports, wait_milliseconds, progress, completion) {
   var til = (new Date()).getTime() + wait_milliseconds;
