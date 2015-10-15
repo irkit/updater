@@ -15,7 +15,7 @@
     "async": "^1.4.2",
     "ejs": "^2.3.3",
     "request": "^2.60.0",
-    "serialport-electron": "1.7.4-electron-0.30.4",
+    "serialport-electron": "2.0.1-electron-0.30.6",
     "temp": "^0.8.3"
   },
   "devDependencies": {

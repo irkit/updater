@@ -5,7 +5,7 @@ IRKit Updater
 
 ## 動作環境
 
-- Mac OSX 10.8以降
+- Mac OSX 10.11以降
 - Windows 7以降
 
 ## 使用方法
