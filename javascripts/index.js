@@ -67,13 +67,17 @@ function showUpdateView(port, release) {
                    function (progress) {
                      appendUpdateLog(progress);
                    },
-                   function (error, fromVersion, toVersion) {
+                   function (error, fromVersion, toVersion, password) {
                      if (error === null || error === undefined) {
                        appendUpdateLog("Finished successfully!\n");
                        $("#update-success").show();
-                       var template = t.gettext("Update from <%= fromVersion %> to <%= toVersion %> finished successfully!");
+                       var template = t.gettext("Update from <%= fromVersion %> to <%= toVersion %> finished successfully!<br />IRKit's Wi-Fi access point password is <strong><%= password %></strong>");
                        $("#update-success-message").
-                         text(ejs.render(template, { fromVersion: fromVersion, toVersion: toVersion }));
+                         html(ejs.render(template, {
+                           fromVersion: fromVersion,
+                           toVersion: toVersion,
+                           password: password
+                         }));
                      }
                      else {
                        appendUpdateLog("Finished with error: "+error+"\n");

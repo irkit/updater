@@ -1,7 +1,7 @@
 {
    "ja": {
       "": {
-         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: LANGUAGE <LL@li.org>\nReport-Msgid-Bugs-To: \nPO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\nLanguage: \nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-09-01 00:29+0000\n"
+         "Project-Id-Version": " PACKAGE VERSION\nLanguage-Team: LANGUAGE <LL@li.org>\nReport-Msgid-Bugs-To: \nPO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\nLanguage: \nMIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2015-10-15 02:02+0000\n"
       },
       "IRKit connected on port": [
          null,
@@ -15,10 +15,6 @@
          null,
          "アップデート失敗！ IRKitを一度コンピュータから抜き、挿し直して再度お試しください"
       ],
-      "Update from <%= fromVersion %> to <%= toVersion %> finished successfully!": [
-         null,
-         "成功！ <%= fromVersion %> から <%= toVersion %> にアップデートしました"
-      ],
       "IRKit not connected. Connect IRKit with a USB cable to this machine and restart": [
          null,
          "IRKitが接続されていません。このコンピュータにUSBケーブルでIRKitを接続し、IRKit Updaterを再起動してください"
@@ -26,6 +22,10 @@
       "No available releases found on https://github.com/irkit/device/releases": [
          null,
          "https://github.com/irkit/device/releases にアップデート可能なリリースが見つかりませんでした"
+      ],
+      "Update from <%= fromVersion %> to <%= toVersion %> finished successfully!<br />IRKit's Wi-Fi access point password is <strong><%= password %></strong>": [
+         null,
+         "成功！ <%= fromVersion %> から <%= toVersion %> にアップデートしました。<br />IRKitのWi-Fiアクセスポイントのパスワードは <strong><%= password %></strong> です。"
       ]
    }
 }

@@ -92,6 +92,7 @@ module.exports = {
     var writingHexFilePath = null;
     var fromVersion = null;
     var toVersion = null;
+    var password = null;
 
     async.waterfall([
       callProgressStep( "Downloading "+release.name+" from "+release.url + "\n" ),
@@ -161,9 +162,11 @@ module.exports = {
           ], callback);
         });
       },
-      function (password, callback) {
-        progress( "\nExtracted original password "+password+"\n" );
+      function (password_, callback) {
+        progress( "\nExtracted original password "+password_+"\n" );
         progress( "Replacing password in hex file\n" );
+
+        password = password_;
 
         var file = temp.openSync({ suffix: ".hex" }); // I know, I know but creating temp files are not gonna take much time
         writingHexFilePath = file.path;
@@ -205,7 +208,7 @@ module.exports = {
         }
       }
     ], function (err) {
-      completion(err, fromVersion, toVersion);
+      completion(err, fromVersion, toVersion, password);
     });
   }
 };
