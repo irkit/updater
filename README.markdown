@@ -15,6 +15,15 @@ IRKit Updater
 1. IRKitをUSBケーブルを使ってコンピューターに接続
 1. Windowsをお使いの場合には、IRKitのドライバをインストール (Macをお使いの場合は必要ありません)
     1. 管理者としてログインします
+    1. Windows 10 の場合
+        1. IRKit.infというファイルを右クリックし、インストール をクリック  
+           <a data-flickr-embed="true"  href="https://www.flickr.com/photos/maaash/22572963275/in/dateposted/" title="IRKit-Updater-Windows10-Setup-2"><img src="https://farm6.staticflickr.com/5746/22572963275_8401ff1951_z.jpg" width="640" height="480" alt="IRKit-Updater-Windows10-Setup-2"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+        1. このファイルを開きます というダイアログが表れるので、開く をクリック  
+           <a data-flickr-embed="true"  href="https://www.flickr.com/photos/maaash/22584186821/in/dateposted/" title="IRKit-Updater-Windows10-Setup-3"><img src="https://farm1.staticflickr.com/714/22584186821_e2736bdf10_z.jpg" width="640" height="480" alt="IRKit-Updater-Windows10-Setup-3"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+        1. このアプリがPCに変更を加えることを許可しますか？ というダイアログが表れるので、はい をクリック  
+           <a data-flickr-embed="true"  href="https://www.flickr.com/photos/maaash/22559406922/in/dateposted/" title="IRKit-Updater-Windows10-Setup-4"><img src="https://farm1.staticflickr.com/690/22559406922_f4b4984121_z.jpg" width="640" height="480" alt="IRKit-Updater-Windows10-Setup-4"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+        1. ドライバーソフトウェアの発行元を検証できません と表示されますが、このドライバーソフトウェアをインストールします をクリック  
+           <a data-flickr-embed="true"  href="https://www.flickr.com/photos/maaash/22386148419/in/dateposted/" title="IRKit-Updater-Windows10-Setup-5"><img src="https://farm1.staticflickr.com/578/22386148419_4c981dedb6_z.jpg" width="640" height="480" alt="IRKit-Updater-Windows10-Setup-5"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
     1. Windows 7, 8 の場合
         1. スタート メニューから、コントロール パネル、システムとセキュリティ、の順にクリックし、システム の下の デバイス マネージャー をクリックします
         1. ほかのデバイス の下に IRKit が表れるので、IRKit を右クリック
